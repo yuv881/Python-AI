@@ -1,7 +1,7 @@
 import json
 from django.conf import settings
 from django.core.cache import cache
-from django.http import JsonResponse
+from django.http import HttpResponse, JsonResponse
 from django.shortcuts import render
 from django.views.decorators.csrf import csrf_exempt
 from command_handler import process_command
@@ -10,6 +10,10 @@ from speech_engine import clear_speech_buffer, get_speech_buffer, speak
 
 def index(request):
     return render(request, 'assistant/index.html')
+
+
+def google_verification(request):
+    return HttpResponse("google-site-verification: google2f83435a64a9c20c.html", content_type="text/plain")
 
 
 def get_client_ip(request):
