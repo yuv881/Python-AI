@@ -20,7 +20,6 @@
       <!-- Header -->
       <header>
         <div class="brand">
-          <div class="avatar-main">S</div>
           <div class="brand-info">
             <h1>AI Assistant</h1>
           </div>
@@ -36,10 +35,17 @@
         <div class="message-row assistant">
           <div class="msg-avatar">S</div>
           <div class="msg-bubble">
-            Hello! I am Shifra, your AI assistant powered by Hugging Face. How can I help you today?
-            <button class="copy-btn" onclick="copyMessage(this)" title="Copy message">
+            Hello! I am Shifra, your AI assistant powered by Hugging Face. How
+            can I help you today?
+            <button
+              class="copy-btn"
+              onclick="copyMessage(this)"
+              title="Copy message"
+            >
               <svg viewBox="0 0 24 24">
-                <path d="M16 1H4c-1.1 0-2 .9-2 2v14h2V3h12V1zm3 4H8c-1.1 0-2 .9-2 2v14c0 1.1.9 2 2 2h11c1.1 0 2-.9 2-2V7c0-1.1-.9-2-2-2zm0 16H8V7h11v14z"/>
+                <path
+                  d="M16 1H4c-1.1 0-2 .9-2 2v14h2V3h12V1zm3 4H8c-1.1 0-2 .9-2 2v14c0 1.1.9 2 2 2h11c1.1 0 2-.9 2-2V7c0-1.1-.9-2-2-2zm0 16H8V7h11v14z"
+                />
               </svg>
             </button>
             <div class="copy-tooltip">Copied!</div>
@@ -99,20 +105,23 @@
         const bubble = btn.closest(".msg-bubble");
         // Clone and remove button/tooltip text to get clean text
         const textToCopy = bubble.childNodes[0].textContent.trim();
-        
-        navigator.clipboard.writeText(textToCopy).then(() => {
-          btn.classList.add("copied");
-          const tooltip = bubble.querySelector(".copy-tooltip");
-          if (tooltip) {
-            tooltip.classList.add("show");
-            setTimeout(() => {
-              tooltip.classList.remove("show");
-              btn.classList.remove("copied");
-            }, 1800);
-          }
-        }).catch(err => {
-          console.error("Failed to copy: ", err);
-        });
+
+        navigator.clipboard
+          .writeText(textToCopy)
+          .then(() => {
+            btn.classList.add("copied");
+            const tooltip = bubble.querySelector(".copy-tooltip");
+            if (tooltip) {
+              tooltip.classList.add("show");
+              setTimeout(() => {
+                tooltip.classList.remove("show");
+                btn.classList.remove("copied");
+              }, 1800);
+            }
+          })
+          .catch((err) => {
+            console.error("Failed to copy: ", err);
+          });
       }
 
       function appendMessage(text, sender) {
@@ -137,7 +146,7 @@
               <path d="M16 1H4c-1.1 0-2 .9-2 2v14h2V3h12V1zm3 4H8c-1.1 0-2 .9-2 2v14c0 1.1.9 2 2 2h11c1.1 0 2-.9 2-2V7c0-1.1-.9-2-2-2zm0 16H8V7h11v14z"/>
             </svg>
           `;
-          
+
           const tooltip = document.createElement("div");
           tooltip.className = "copy-tooltip";
           tooltip.textContent = "Copied!";
