@@ -28,10 +28,7 @@ DEBUG = True
 
 ALLOWED_HOSTS = [
     host.strip()
-    for host in os.getenv(
-        "ALLOWED_HOSTS",
-        "localhost,127.0.0.1,python-ai-7qx5.onrender.com,.onrender.com",
-    ).split(",")
+    for host in os.getenv("ALLOWED_HOSTS", "localhost,127.0.0.1,python-ai-7qx5.onrender.com,.onrender.com").split(",")
     if host.strip()
 ]
 
