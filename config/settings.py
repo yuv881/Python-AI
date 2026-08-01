@@ -32,6 +32,9 @@ ALLOWED_HOSTS = [
     if host.strip()
 ]
 
+COMMAND_RATE_LIMIT = int(os.getenv("COMMAND_RATE_LIMIT", "20"))
+COMMAND_RATE_LIMIT_WINDOW = int(os.getenv("COMMAND_RATE_LIMIT_WINDOW", "60"))
+
 
 # Application definition
 
