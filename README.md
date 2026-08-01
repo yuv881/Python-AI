@@ -18,6 +18,19 @@ Render service id: `srv-d9mps1e417fc73bur7fg`
 - Basic Windows desktop controls for local use
 - IP-based rate limiting for the command API
 
+## Live App Limitations
+
+The live Render deployment runs on a Linux server, so it cannot control your personal Windows desktop directly.
+
+These commands work only when running locally on Windows:
+
+- Open or close desktop apps such as Notepad, Paint, Chrome, or Calculator
+- Open local folders such as Downloads, Desktop, Documents, or Pictures
+- Change system volume
+- Lock the screen
+
+On Render, those commands return a clear message instead of trying to run desktop-only actions on the server.
+
 ## Setup
 
 Install dependencies:

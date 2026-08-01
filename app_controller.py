@@ -1,10 +1,23 @@
 import os
+import platform
 import webbrowser
 import psutil
 from speech_engine import speak
 
 
+def is_windows_desktop():
+    return platform.system() == "Windows"
+
+
+def desktop_only_message(action="control apps"):
+    speak(f"I can only {action} on the local Windows desktop version, not from the live Render server.")
+
+
 def close_app(query):
+    if not is_windows_desktop():
+        desktop_only_message("close apps")
+        return
+
     app_process_map = {
         "calculator": ["calculatorapp.exe", "calculator.exe", "calc.exe"],
         "calc": ["calculatorapp.exe", "calculator.exe", "calc.exe"],
@@ -37,8 +50,16 @@ def close_app(query):
 
 def open_app(query):
     if query in ["google", "youtube", "facebook", "instagram", "gmail", "github"]:
-        webbrowser.open(f"https://www.{query}.com")
-        speak(f"Opened {query}.")
+        url = f"https://www.{query}.com"
+        if is_windows_desktop():
+            webbrowser.open(url)
+            speak(f"Opened {query}.")
+        else:
+            speak(f"I cannot open a browser on the Render server. You can visit {url}.")
+        return
+
+    if not is_windows_desktop():
+        desktop_only_message("open apps")
         return
 
     open_cmd_map = {

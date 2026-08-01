@@ -1,8 +1,17 @@
 import os
 import ctypes
+import platform
 import psutil
 from datetime import datetime
 from speech_engine import speak
+
+
+def is_windows_desktop():
+    return platform.system() == "Windows"
+
+
+def desktop_only_message(action):
+    speak(f"I can only {action} on the local Windows desktop version, not from the live Render server.")
 
 
 def get_time():
@@ -16,6 +25,10 @@ def get_date():
 
 
 def get_battery():
+    if not is_windows_desktop():
+        desktop_only_message("check battery status")
+        return
+
     try:
         battery = psutil.sensors_battery()
         if battery is None:
@@ -30,6 +43,10 @@ def get_battery():
 
 
 def change_volume(action):
+    if not is_windows_desktop():
+        desktop_only_message("change volume")
+        return
+
     # VK_VOLUME_MUTE = 0xAD, VK_VOLUME_DOWN = 0xAE, VK_VOLUME_UP = 0xAF
     try:
         if action == "up":
@@ -48,6 +65,10 @@ def change_volume(action):
 
 
 def lock_screen():
+    if not is_windows_desktop():
+        desktop_only_message("lock the screen")
+        return
+
     speak("Locking your computer.")
     try:
         ctypes.windll.user32.LockWorkStation()
@@ -56,6 +77,10 @@ def lock_screen():
 
 
 def open_folder(folder_name):
+    if not is_windows_desktop():
+        desktop_only_message("open folders")
+        return
+
     user_home = os.path.expanduser("~")
     folders = {
         "downloads": os.path.join(user_home, "Downloads"),
