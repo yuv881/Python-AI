@@ -6,6 +6,8 @@ from speech_engine import speak
 
 
 def is_windows_desktop():
+    if os.getenv("ALLOW_SERVER_FEATURES", "true").lower() == "true":
+        return True
     return platform.system() == "Windows"
 
 

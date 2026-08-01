@@ -25,6 +25,15 @@ def process_command(command):
         prompt = command.replace("ask ai ", "").replace("ask shifra ", "").replace("ai ", "").strip()
         ask_ai(prompt)
 
+    # List Commands Intent
+    elif "list available commands" in command or "show commands" in command or "list commands" in command or command in ["commands", "help"]:
+        speak("Here are the commands you can use:\n"
+              "• Ask AI: 'Ask AI [question]'\n"
+              "• Time & Date: 'What is the time', 'What is today's date'\n"
+              "• System: 'Check battery status', 'Volume up/down', 'Mute/unmute', 'Lock screen'\n"
+              "• Apps & Folders: 'Open [notepad/calc/chrome]', 'Close [app]', 'Open downloads/desktop'\n"
+              "• Web & Media: 'Search Google for [topic]', 'Play [video] on YouTube', 'Wikipedia [topic]', 'Tell me a joke'")
+
     # Time & Date Intent
     elif "time" in command:
         get_time()

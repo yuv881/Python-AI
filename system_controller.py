@@ -7,6 +7,8 @@ from speech_engine import speak
 
 
 def is_windows_desktop():
+    if os.getenv("ALLOW_SERVER_FEATURES", "true").lower() == "true":
+        return True
     return platform.system() == "Windows"
 
 
@@ -15,12 +17,26 @@ def desktop_only_message(action):
 
 
 def get_time():
-    now = datetime.now().strftime("%I:%M %p")
+    try:
+        import pytz
+        tz = pytz.timezone("Asia/Kolkata")
+        now = datetime.now(tz).strftime("%I:%M %p")
+    except Exception:
+        from datetime import timezone, timedelta
+        tz = timezone(timedelta(hours=5, minutes=30))
+        now = datetime.now(tz).strftime("%I:%M %p")
     speak(f"The current time is {now}.")
 
 
 def get_date():
-    today = datetime.now().strftime("%B %d, %Y")
+    try:
+        import pytz
+        tz = pytz.timezone("Asia/Kolkata")
+        today = datetime.now(tz).strftime("%B %d, %Y")
+    except Exception:
+        from datetime import timezone, timedelta
+        tz = timezone(timedelta(hours=5, minutes=30))
+        today = datetime.now(tz).strftime("%B %d, %Y")
     speak(f"Today is {today}.")
 
 

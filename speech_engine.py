@@ -15,21 +15,35 @@ def get_speech_buffer():
     return list(_speech_buffer)
 
 
+_tts_lock = threading.Lock()
+
+
 def _play_speech_async(text):
-    try:
-        import pythoncom
-        import win32com.client
-        pythoncom.CoInitialize()
-        speaker = win32com.client.Dispatch("SAPI.SpVoice")
-        speaker.Speak(str(text))
-    except Exception as e1:
+    with _tts_lock:
+        pythoncom_available = False
         try:
-            engine = pyttsx3.init()
-            engine.setProperty("rate", 150)
-            engine.say(str(text))
-            engine.runAndWait()
-        except Exception as e2:
-            print(f"TTS Error: {e1} | {e2}")
+            import pythoncom
+            import win32com.client
+            pythoncom.CoInitialize()
+            pythoncom_available = True
+            speaker = win32com.client.Dispatch("SAPI.SpVoice")
+            speaker.Speak(str(text))
+        except Exception as e1:
+            try:
+                engine = pyttsx3.init()
+                engine.setProperty("rate", 150)
+                engine.say(str(text))
+                engine.runAndWait()
+            except Exception as e2:
+                # Silently catch TTS issues on headless/server hosts or concurrent calls
+                pass
+        finally:
+            if pythoncom_available:
+                try:
+                    import pythoncom
+                    pythoncom.CoUninitialize()
+                except Exception:
+                    pass
 
 
 def speak(text, play_audio=True):

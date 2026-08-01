@@ -7,3 +7,5 @@ python-dotenv==1.2.2
 pyttsx3==2.99
 pywin32==311; platform_system == "Windows"
 SpeechRecognition==3.15.1
+pytz==2024.2
+pythoncom
