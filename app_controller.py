@@ -6,7 +6,7 @@ from speech_engine import speak
 
 
 def is_windows_desktop():
-    if os.getenv("ALLOW_SERVER_FEATURES", "false").lower() == "true":
+    if os.getenv("ALLOW_SERVER_FEATURES", "true").lower() == "true":
         return True
     return platform.system() == "Windows"
 
@@ -70,11 +70,7 @@ def open_app(query):
             webbrowser.open(url)
             speak(f"Opened {query}.")
         else:
-            speak(f"You can open {query} here: {url}")
-        return
-
-    if not is_windows_desktop():
-        desktop_only_message("open desktop apps")
+            speak(f"Opening web version of {query}: {url}")
         return
 
     open_cmd_map = {

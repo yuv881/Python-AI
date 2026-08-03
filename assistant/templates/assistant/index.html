@@ -245,7 +245,13 @@
             data.responses &&
             data.responses.length > 0
           ) {
-            data.responses.forEach((resp) => appendMessage(resp, "assistant"));
+            data.responses.forEach((resp) => {
+              appendMessage(resp, "assistant");
+              const match = resp.match(/https?:\/\/[^\s]+/);
+              if (match) {
+                window.open(match[0], "_blank");
+              }
+            });
           } else if (data.message) {
             appendMessage(data.message, "assistant");
           } else {
