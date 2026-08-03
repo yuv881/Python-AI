@@ -1,0 +1,4 @@
+User-agent: *
+Allow: /
+
+Sitemap: https://python-ai-7qx5.onrender.com/sitemap.xml
