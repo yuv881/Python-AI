@@ -16,6 +16,15 @@ def google_verification(request):
     return HttpResponse("google-site-verification: google2f83435a64a9c20c.html", content_type="text/plain")
 
 
+def robots_txt(request):
+    return HttpResponse(
+        "User-agent: *\n"
+        "Allow: /\n"
+        "Sitemap: https://python-ai-7qx5.onrender.com/sitemap.xml",
+        content_type="text/plain",
+    )
+
+
 def get_client_ip(request):
     forwarded_for = request.META.get('HTTP_X_FORWARDED_FOR')
     if forwarded_for:
