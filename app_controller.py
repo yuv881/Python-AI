@@ -6,13 +6,13 @@ from speech_engine import speak
 
 
 def is_windows_desktop():
-    if os.getenv("ALLOW_SERVER_FEATURES", "true").lower() == "true":
+    if os.getenv("ALLOW_SERVER_FEATURES", "false").lower() == "true":
         return True
     return platform.system() == "Windows"
 
 
 def desktop_only_message(action="control apps"):
-    speak(f"I can only {action} on the local Windows desktop version, not from the live Render server.")
+    speak(f"I can only {action} when running on a local Windows PC, not on the live server.")
 
 
 def close_app(query):
@@ -35,14 +35,18 @@ def close_app(query):
     target_procs = app_process_map.get(query, [])
     closed = False
 
-    for proc in psutil.process_iter(['name']):
-        try:
-            pname = proc.info['name'].lower()
-            if (target_procs and pname in target_procs) or (query and len(query) > 2 and query in pname):
-                proc.kill()
-                closed = True
-        except (psutil.NoSuchProcess, psutil.AccessDenied, psutil.ZombieProcess):
-            pass
+    try:
+        for proc in psutil.process_iter(['name']):
+            try:
+                pname = proc.info['name'].lower()
+                if (target_procs and pname in target_procs) or (query and len(query) > 2 and query in pname):
+                    proc.kill()
+                    closed = True
+            except (psutil.NoSuchProcess, psutil.AccessDenied, psutil.ZombieProcess):
+                pass
+    except Exception:
+        speak("Could not access process list.")
+        return
 
     if closed:
         speak(f"Closed {query}.")
@@ -51,17 +55,26 @@ def close_app(query):
 
 
 def open_app(query):
-    if query in ["google", "youtube", "facebook", "instagram", "gmail", "github"]:
-        url = f"https://www.{query}.com"
+    web_sites = {
+        "google": "https://www.google.com",
+        "youtube": "https://www.youtube.com",
+        "facebook": "https://www.facebook.com",
+        "instagram": "https://www.instagram.com",
+        "gmail": "https://mail.google.com",
+        "github": "https://www.github.com"
+    }
+
+    if query in web_sites:
+        url = web_sites[query]
         if is_windows_desktop():
             webbrowser.open(url)
             speak(f"Opened {query}.")
         else:
-            speak(f"I cannot open a browser on the Render server. You can visit {url}.")
+            speak(f"You can open {query} here: {url}")
         return
 
     if not is_windows_desktop():
-        desktop_only_message("open apps")
+        desktop_only_message("open desktop apps")
         return
 
     open_cmd_map = {
@@ -105,3 +118,4 @@ def handle_app_command(command):
         close_app(query)
     else:
         open_app(query)
+
